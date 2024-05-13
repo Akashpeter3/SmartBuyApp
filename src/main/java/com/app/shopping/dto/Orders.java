@@ -1,22 +1,25 @@
 package com.app.shopping.dto;
 
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.util.List;
 
-
 @Entity
-
 public class Orders {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ORDER_ID")
     private Long orderId;
+    @NotNull
     private Long customerId;
+    @NotNull
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "orderId_fk")
     private List<Item> orderItems;
+
+    @NotNull
     private double totalPrice;
     private String status;
 
