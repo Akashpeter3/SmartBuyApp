@@ -6,6 +6,7 @@ import com.app.shopping.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+    @Secured("ROLE_USER")
     @PostMapping("/placeorder")
     public ResponseEntity<?> placeOrder(@RequestBody Orders orders) {
         Long orderId = orderService.placeOrder(orders);
