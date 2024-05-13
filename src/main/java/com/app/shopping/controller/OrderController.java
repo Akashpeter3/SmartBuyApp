@@ -19,12 +19,12 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
     @PostMapping("/placeorder")
-    ResponseEntity<?>placeorder(@RequestBody Orders orders ){
-      Long orderId= orderService.placeOrder(orders);
-        if (orderId == null || orderId == 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid orderId");
-        } else {
+    public ResponseEntity<?> placeOrder(@RequestBody Orders orders) {
+        Long orderId = orderService.placeOrder(orders);
+        if (orderId != null && orderId > 0) {
             return ResponseEntity.ok(orderId);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid orderId");
         }
     }
 
