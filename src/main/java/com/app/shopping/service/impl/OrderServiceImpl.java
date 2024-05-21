@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -57,16 +58,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String cancelOrder(Long orderID) {
-       Orders order = orderRepo.findById(orderID).get();
-       if (order != null) {
-         String currentStatus=order.getStatus();
-         if (currentStatus!=null&& !currentStatus.isEmpty()){
-             currentStatus="Order Cancelled";
-             order.setStatus(currentStatus);
-          return    orderRepo.save(order).getStatus();
-         }
-
-       }
+        Optional<Orders> optionalOrder = orderRepo.findById(orderID);
+        if (optionalOrder.isPresent()) {
+            Orders order = optionalOrder.get();
+            String currentStatus = order.getStatus();
+            if (currentStatus != null && !currentStatus.isEmpty()) {
+                order.setStatus("Order Cancelled");
+                return orderRepo.save(order).getStatus();
+            }
+        }
         return null;
     }
 }

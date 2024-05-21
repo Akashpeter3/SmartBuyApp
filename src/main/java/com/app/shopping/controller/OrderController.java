@@ -70,12 +70,12 @@ public class OrderController {
     }
     @Secured("ROLE_USER")
     @PutMapping("/orders/cancel/{orderId}")
-    public ResponseEntity<?> cancelOrder(@PathVariable Long orderID) {
-      String status = orderService.cancelOrder(orderID);
+    public ResponseEntity<?> cancelOrder(@PathVariable Long orderId) {
+      String status = orderService.cancelOrder(orderId);
       if (status != null&&!status.isEmpty()){
           return  new ResponseEntity<>(status,HttpStatus.OK);
       }else {
-          return new ResponseEntity<>("Order not found for the ID "+orderID, HttpStatus.NOT_FOUND);
+          return new ResponseEntity<>("Order not found for the OrderID "+orderId, HttpStatus.NOT_FOUND);
       }
     }
 
