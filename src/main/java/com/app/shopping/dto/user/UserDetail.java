@@ -1,10 +1,15 @@
 package com.app.shopping.dto.user;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiParam;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "UserDetail")
 public class UserDetail {
     @Id
+    @JsonIgnore
+    @ApiParam(value = "Hidden parameter", hidden = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int userId;
     private String name;

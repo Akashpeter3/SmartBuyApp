@@ -1,17 +1,24 @@
 package com.app.shopping.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
+
 import javax.persistence.*;
 @Entity
 public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "Order ID", hidden = true)
     private Long productId;
     private String productName;
     private int quantity;
     private double price;
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "orderId_fk")
+    @JsonBackReference
     private Orders order;
 
 

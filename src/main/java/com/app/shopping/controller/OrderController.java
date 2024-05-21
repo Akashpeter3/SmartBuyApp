@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -29,5 +28,37 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid orderId");
         }
     }
+
+    @Secured("ROLE_USER")
+    @GetMapping("/{orderId}")
+    public ResponseEntity<?> getOrderByID(@PathVariable Long orderId) {
+        try {
+            Orders order = orderService.getOrderByID(orderId);
+            if (order != null) {
+                return new ResponseEntity<>(order, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Order not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred while retrieving the order", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @Secured("ROLE_USER")
+    @GetMapping("/getAllOrders")
+    public ResponseEntity<?> getAllOrders() {
+        try {
+            List<Orders> orderList = orderService.getAllOrders();
+            if (orderList != null) {
+                return new ResponseEntity<>(orderList, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Order not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred while retrieving the order", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }

@@ -1,7 +1,11 @@
 package com.app.shopping.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,15 +15,18 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ORDER_ID")
+    @ApiModelProperty(value = "Order ID", hidden = true)
     private Long orderId;
     @NotNull
     private Long customerId;
     @NotNull
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "orderId_fk")
+    @JsonManagedReference
     private List<Item> orderItems;
 
     @NotNull
+    @ApiModelProperty(hidden = true)
     private double totalPrice;
     private String status;
 

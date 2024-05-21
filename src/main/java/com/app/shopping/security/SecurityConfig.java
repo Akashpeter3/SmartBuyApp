@@ -29,11 +29,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http    .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/placeorder").hasRole("USER")
-                .anyRequest().authenticated()
+                .antMatchers("/api/orders/placeorder").permitAll()  // Allow all requests to this path
+                .anyRequest().authenticated()  // Authenticate all other requests
                 .and()
                 .httpBasic();
     }
+
 }
