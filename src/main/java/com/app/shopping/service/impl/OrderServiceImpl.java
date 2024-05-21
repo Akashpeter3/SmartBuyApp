@@ -16,7 +16,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderRepo orderRepo;
     @Override
-    public Long placeOrder(Orders order) {
+    public Long placeOrderFromCart(Orders order) {
         double price = 0;
         double newPrice=0;
         double totalPrice = 0;
@@ -34,6 +34,7 @@ public class OrderServiceImpl implements OrderService {
            }
             if (totalPrice!=0) {
                 order.setTotalPrice(totalPrice);
+                order.setStatus("Order Placed");
             }else {
                 System.out.println("Price should not be zero");
                 return  null;

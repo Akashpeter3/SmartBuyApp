@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    Long placeOrder(Orders orders);
+    Long placeOrderFromCart(Orders orders);
 
     Orders getOrderByID(Long orderId);
 
