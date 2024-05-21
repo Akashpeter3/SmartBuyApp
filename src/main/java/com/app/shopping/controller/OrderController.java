@@ -68,7 +68,7 @@ public class OrderController {
             return new ResponseEntity<>("An error occurred while retrieving the order", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Secured("ROLE_USER")
     @PutMapping("/orders/cancel/{orderId}")
     public ResponseEntity<?> cancelOrder(@PathVariable Long orderID) {
       String status = orderService.cancelOrder(orderID);
