@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/api")
 public class OrderController {
 
 
     @Autowired
     private OrderService orderService;
     @Secured("ROLE_USER")
-    @PostMapping("/placeorder")
+    @PostMapping("/orders/placeorder")
     public ResponseEntity<?> placeOrder(@RequestBody Orders orders) {
         Long orderId = orderService.placeOrder(orders);
         if (orderId != null && orderId > 0) {
@@ -30,7 +30,7 @@ public class OrderController {
     }
 
     @Secured("ROLE_USER")
-    @GetMapping("/{orderId}")
+    @GetMapping("/orders/{orderId}")
     public ResponseEntity<?> getOrderByID(@PathVariable Long orderId) {
         try {
             Orders order = orderService.getOrderByID(orderId);
@@ -46,7 +46,7 @@ public class OrderController {
 
 
     @Secured("ROLE_USER")
-    @GetMapping("/getAllOrders")
+    @GetMapping("/orders/getAllOrders")
     public ResponseEntity<?> getAllOrders() {
         try {
             List<Orders> orderList = orderService.getAllOrders();
@@ -56,7 +56,7 @@ public class OrderController {
                 return new ResponseEntity<>("Order not found", HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
-            return new ResponseEntity<>("An error occurred while retrieving the order", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("An error occurred while retrieving the orders", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
