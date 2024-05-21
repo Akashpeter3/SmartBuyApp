@@ -12,4 +12,6 @@ public interface OrderService {
 
 
     List<Orders> getAllOrders();
+
+    String cancelOrder(Long orderID);
 }

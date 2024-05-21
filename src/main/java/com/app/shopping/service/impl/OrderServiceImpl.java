@@ -54,4 +54,19 @@ public class OrderServiceImpl implements OrderService {
     public List<Orders> getAllOrders() {
         return orderRepo.findAll();
     }
+
+    @Override
+    public String cancelOrder(Long orderID) {
+       Orders order = orderRepo.findById(orderID).get();
+       if (order != null) {
+         String currentStatus=order.getStatus();
+         if (currentStatus!=null&& !currentStatus.isEmpty()){
+             currentStatus="Order Cancelled";
+             order.setStatus(currentStatus);
+          return    orderRepo.save(order).getStatus();
+         }
+
+       }
+        return null;
+    }
 }
