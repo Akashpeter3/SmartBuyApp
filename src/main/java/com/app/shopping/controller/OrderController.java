@@ -1,7 +1,6 @@
 package com.app.shopping.controller;
 
 
-import com.app.shopping.dto.Cart;
 import com.app.shopping.dto.Orders;
 import com.app.shopping.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +19,14 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
     @Secured("ROLE_USER")
-    @PostMapping("/placeOrderFromCart")
-    public ResponseEntity<?> placeOrderFromCart(@RequestBody Cart cart) {
-        Orders orders = new Orders();
-        orders = placeOrderFromCart(cart,orders);
+    @PostMapping("/placeorder")
+    public ResponseEntity<?> placeOrder(@RequestBody Orders orders) {
         Long orderId = orderService.placeOrder(orders);
         if (orderId != null && orderId > 0) {
             return ResponseEntity.ok(orderId);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid orderId");
         }
-    }
-
-    private Orders placeOrderFromCart(Cart cart, Orders orders) {
-        orders.setOrderItems(cart.getCartItems());
-        orders.setCustomerId(cart.getCustomerId());
-        return orders;
     }
 
     @Secured("ROLE_USER")
@@ -68,14 +59,6 @@ public class OrderController {
             return new ResponseEntity<>("An error occurred while retrieving the order", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-//    @Secured("ROLE_USER")
-//    @DeleteMapping("/delete/{orderId}")
-//    public ResponseEntity<?> cancelOrderB(@PathVariable Long orderId) {
-//
-//    }
-
-
 
 
 }
