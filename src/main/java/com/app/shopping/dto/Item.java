@@ -1,9 +1,7 @@
 package com.app.shopping.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiParam;
 
 import javax.persistence.*;
 @Entity
@@ -19,6 +17,7 @@ public class Item {
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "orderId_fk")
     @JsonBackReference
+    @ApiModelProperty(hidden = true)
     private Orders order;
 
 
