@@ -80,4 +80,16 @@ public class OrderController {
     }
 
 
+    @Secured("ROLE_USER")
+    @DeleteMapping("/orders/delete/{orderId}")
+    public ResponseEntity<?> deleteOrder(@PathVariable Long orderId) {
+        String status = orderService.deleteOrder(orderId);
+        if (status != null&&!status.isEmpty()){
+            return  new ResponseEntity<>(status,HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>("Invalid OrderID "+orderId, HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 }

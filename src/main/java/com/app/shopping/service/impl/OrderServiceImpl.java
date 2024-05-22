@@ -69,4 +69,21 @@ public class OrderServiceImpl implements OrderService {
         }
         return null;
     }
+
+    @Override
+    public String deleteOrder(Long orderId) {
+        Optional<Orders> optionalOrder = orderRepo.findById(orderId);
+        if (optionalOrder.isPresent()) {
+            Orders order = optionalOrder.get();
+            if (order != null) {
+                order.setStatus("Order Deleted!");
+                 orderRepo.delete(order);
+                 return  "Order Deleted Successfully!";
+            }
+        }else {
+
+            return "No order present for the order ID "+orderId;
+        }
+        return null;
+    }
 }
