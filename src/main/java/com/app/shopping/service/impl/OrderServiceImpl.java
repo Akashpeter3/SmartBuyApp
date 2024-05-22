@@ -17,7 +17,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderRepo orderRepo;
     @Override
-    public Long placeOrderFromCart(Orders order) {
+    public Long placeOrder(Orders order) {
         double price = 0;
         double newPrice=0;
         double totalPrice = 0;

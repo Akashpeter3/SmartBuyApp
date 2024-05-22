@@ -2,6 +2,7 @@ package com.app.shopping.controller;
 
 
 import com.app.shopping.dto.Cart;
+import com.app.shopping.dto.Item;
 import com.app.shopping.dto.Orders;
 import com.app.shopping.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,14 @@ import java.util.List;
 public class OrderController {
 
 
-    @Autowired
-    private OrderService orderService;
     @Secured("ROLE_USER")
-    @PostMapping("/orders/placeOrderFromCart")
-    public ResponseEntity<?> placeOrderFromCart(@RequestBody Cart cart) {
+    @PostMapping("/orders/placeOrderByItem")
+    public ResponseEntity<?> placeOrderByItem(@RequestBody Item item) {
         Orders order = new Orders();
-        Orders orders =  placeOrder(cart, order);
-        Long orderId = orderService.placeOrderFromCart(orders);
+        mapItemListWithOrder(order, item);
+       
+        order.setCustomerId(item.getOrder().getCustomerId());
+        Long orderId = orderService.placeOrder(order);
         if (orderId != null && orderId > 0) {
             return ResponseEntity.ok(orderId);
         } else {
@@ -32,11 +33,31 @@ public class OrderController {
         }
     }
 
+    private void mapItemListWithOrder(Orders order, Item item) {
+    }
+
+    @Autowired
+    private OrderService orderService;
+    @Secured("ROLE_USER")
+    @PostMapping("/orders/placeOrderFromCart")
+    public ResponseEntity<?> placeOrderFromCart(@RequestBody Cart cart) {
+        Orders order = new Orders();
+        Orders orders =  placeOrder(cart, order);
+        Long orderId = orderService.placeOrder(orders);
+        if (orderId != null && orderId > 0) {
+            return ResponseEntity.ok(orderId);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid orderId");
+        }
+    }
+
+
     private Orders placeOrder(Cart cart, Orders order) {
         order.setOrderItems(cart.getCartItems());
         order.setCustomerId(cart.getCustomerId());
         return order;
     }
+
 
     @Secured("ROLE_USER")
     @GetMapping("/orders/{orderId}")
