@@ -13,6 +13,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       shutdown-timeout: 30s
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -21,6 +22,11 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5Dialect
     show-sql: true
     generate-ddl: true
+    properties:
+      hibernate:
+        id:
+          new_generator_mappings: false
+
       #open-in-view: false
       #properties:
     # hibernate.format_sql: true
