@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AdminServiceImpl implements AdminService {
 
@@ -20,24 +22,25 @@ public class AdminServiceImpl implements AdminService {
     private PasswordEncoder passwordEncoder;
     @Override
     public String addUser(User user) {
-        String existingUserName = loadUserByUserNameAndEmail(user);
-        if (!existingUserName.equalsIgnoreCase(user.getUserName())) {
-        user.setStatusFlag(true);
-        if (user.getStatusFlag()) {
-            user.setUserStatus("Active");
-            user.setUserPassword(PasswordUtil.generateRandomPassword());
-        }
-        String userName = adminRepository.save(user).getUserName();
-        return userName;
-    }else {
+        Optional<User> existingUser = loadUserByUserNameAndEmail(user);
+
+        if (existingUser.isPresent() ) {
             return AppConstants.USER_EXISTS;
+        } else {
+            user.setStatusFlag(true);
+            if (user.getStatusFlag()) {
+                user.setUserStatus("Active");
+                user.setUserPassword(PasswordUtil.generateRandomPassword());
+            }
+            String userName = adminRepository.save(user).getUserName();
+            return userName;
         }
     }
 
-    private String loadUserByUserNameAndEmail(User user) {
-      User existingUser =   adminRepository.findByUsernameAndEmail(user.getUserName(),user.getUserEmail());
+    private Optional<User> loadUserByUserNameAndEmail(User user) {
+      Optional<User> existingUser = adminRepository.findByUsernameAndEmail(user.getUserName(),user.getUserEmail());
         if (existingUser != null) {
-            return existingUser.getUserName();
+            return existingUser;
         }
         return null;
     }
