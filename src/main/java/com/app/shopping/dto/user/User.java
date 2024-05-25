@@ -1,5 +1,6 @@
 package com.app.shopping.dto.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 
 import javax.persistence.*;
@@ -15,13 +16,41 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int userId;
     private String userName;
+    @JsonIgnore
+    @ApiModelProperty(value = "Hidden")
+    private String userPassword;
     private String userEmail;
 
     private String userAddress;
 
+    @JsonIgnore
+    @ApiModelProperty(value = "Hidden")
+    @Transient
+    private boolean statusFlag;
+    @JsonIgnore
+    @ApiModelProperty(value = "Hidden")
+    private String userStatus;
+
     @Size(min = 10, max = 10, message = "Phone number must be exactly 10 digits")
-    @Pattern(regexp = "\\d{10}", message = "Phone number must contain only digits")
+    @Pattern(regexp = "\\d{10}", message = "Phone number must contain only 10 digits")
     private String userPhone;
+
+
+    public String getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public boolean getStatusFlag() {
+        return statusFlag;
+    }
+
+    public void setStatusFlag(boolean statusFlag) {
+        this.statusFlag = statusFlag;
+    }
 
     public int getUserId() {
         return userId;
@@ -37,6 +66,14 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
     public String getUserEmail() {
@@ -65,11 +102,12 @@ public class User {
 
     @Override
     public String toString() {
-        return "UserDetail{" +
+        return "User{" +
                 "userId=" + userId +
                 ", userName='" + userName + '\'' +
                 ", userEmail='" + userEmail + '\'' +
                 ", userAddress='" + userAddress + '\'' +
+                ", userStatus='" + userStatus + '\'' +
                 ", userPhone='" + userPhone + '\'' +
                 '}';
     }

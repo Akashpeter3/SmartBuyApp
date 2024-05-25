@@ -18,7 +18,7 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   jpa:
-    hibernate.ddl-auto: validate
+    hibernate.ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5Dialect
     show-sql: true
     generate-ddl: true

@@ -1,5 +1,6 @@
 package com.app.shopping.controller;
 
+import com.app.shopping.constants.AppConstants;
 import com.app.shopping.dto.user.User;
 import com.app.shopping.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class AdminController {
     public ResponseEntity<?> addUser(@RequestBody User userDetail) {
         String user = adminService.addUser(userDetail);
 
+        if (user.equalsIgnoreCase(AppConstants.USER_EXISTS)){
+            return new ResponseEntity<>(AppConstants.USER_EXISTS, HttpStatus.BAD_REQUEST);
+        }
         if (user != null) {
             return new ResponseEntity<>(" user "+user+" added ", HttpStatus.CREATED);
         } else {
