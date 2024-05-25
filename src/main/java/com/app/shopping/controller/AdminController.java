@@ -3,6 +3,7 @@ package com.app.shopping.controller;
 import com.app.shopping.constants.AppConstants;
 import com.app.shopping.dto.user.User;
 import com.app.shopping.service.AdminService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
+@Api(tags = " Admin Controller API")
 public class AdminController {
 
     @Autowired

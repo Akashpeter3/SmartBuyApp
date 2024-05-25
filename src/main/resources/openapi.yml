@@ -1,0 +1,24 @@
+components:
+  schemas:
+    HiddenModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    AnotherModel:
+      type: object
+      properties:
+        id:
+          type: integer
+        description:
+          type: string
+
+paths:
+  /example:
+    get:
+      summary: Example endpoint
+      responses:
+        '200':
+          description: OK

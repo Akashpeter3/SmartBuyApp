@@ -4,6 +4,8 @@ import com.app.shopping.dto.Cart;
 import com.app.shopping.dto.Item;
 import com.app.shopping.dto.Orders;
 import com.app.shopping.service.OrderService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@Api(tags = " Order API")
 public class OrderController {
 
     @Autowired
@@ -22,6 +25,7 @@ public class OrderController {
 
     @Secured("ROLE_USER")
     @PostMapping("/orders/placeOrderByItem/{customerID}")
+    @ApiOperation("Place an order BY item")
     public ResponseEntity<?> placeOrderByItem(@RequestBody Item item, @PathVariable Long customerID) {
         try {
             if (customerID > 0) {
