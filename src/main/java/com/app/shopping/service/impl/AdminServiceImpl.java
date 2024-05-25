@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -56,6 +57,19 @@ public class AdminServiceImpl implements AdminService {
             return "Failed to remove user: " + e.getMessage();
         }
     }
+
+    @Override
+    public User getUserByName(String userName) {
+        Optional<User> user = loadUserByUserName(userName);
+        return user.orElse(null);
+    }
+
+    @Override
+    public List<User> getUsers() {
+        List<User> users = adminRepository.findAll();
+        return users;
+    }
+
 
     private Optional<User> loadUserByUserName(String userName) {
         try {

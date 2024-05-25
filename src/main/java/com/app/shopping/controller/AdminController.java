@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -42,6 +44,27 @@ public class AdminController {
             return new ResponseEntity<>("Failed to add user.", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/getUserByName/{userName}")
+    public ResponseEntity<?> getUserByName(@PathVariable String userName) {
+        User user = adminService.getUserByName(userName);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(AppConstants.USER_NOT_EXIST);
+        }
+    }
+
+    @GetMapping("/getUsers")
+    public ResponseEntity<?> getUsers() {
+        List<User> userList = adminService.getUsers();
+        if (userList != null&&!userList.isEmpty()) {
+            return ResponseEntity.ok(userList);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Users exist");
+        }
+    }
+
 
 
 }
