@@ -6,10 +6,7 @@ import com.app.shopping.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -19,16 +16,32 @@ public class AdminController {
     private AdminService adminService;
 
     @PostMapping("/addUser")
-    public ResponseEntity<?> addUser(@RequestBody User userDetail) {
+    public ResponseEntity<String> addUser(@RequestBody User userDetail) {
         String user = adminService.addUser(userDetail);
 
-        if (user.equalsIgnoreCase(AppConstants.USER_EXISTS)){
-            return new ResponseEntity<>("User "+userDetail.getUserName()+" already exist. ", HttpStatus.ACCEPTED);
+        if (AppConstants.USER_EXISTS.equalsIgnoreCase(user)) {
+            return new ResponseEntity<>("User " + userDetail.getUserName() + " already exists.", HttpStatus.ACCEPTED);
         }
         if (user != null) {
-            return new ResponseEntity<>(" user "+user+" added ", HttpStatus.CREATED);
+            return new ResponseEntity<>("User " + user + " added.", HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>("Failed to add user", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Failed to add user.", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @DeleteMapping("/removeUser/{userName}")
+    public ResponseEntity<String> removeUser(@PathVariable String userName) {
+        String response = adminService.removeUser(userName);
+
+        if (AppConstants.USER_NOT_EXIST.equalsIgnoreCase(response)) {
+            return new ResponseEntity<>("User " + userName + " not exists.", HttpStatus.ACCEPTED);
+        }
+        if (AppConstants.USER_DELETED.equalsIgnoreCase(response)) {
+            return new ResponseEntity<>("User " + userName + " deleted successfully.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed to add user.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 }

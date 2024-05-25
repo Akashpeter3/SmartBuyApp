@@ -12,4 +12,6 @@ public interface AdminRepository extends JpaRepository<User,Long> {
 
     @Query("SELECT u FROM User u WHERE u.userName = :userName AND u.userEmail = :userEmail")
     Optional<User> findByUsernameAndEmail(String userName, String userEmail);
+    @Query("SELECT u FROM User u WHERE u.userName = :userName")
+    Optional<User> findUserByUserName(String userName);
 }
