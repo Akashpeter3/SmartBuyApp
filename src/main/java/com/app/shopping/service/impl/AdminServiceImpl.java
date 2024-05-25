@@ -20,7 +20,7 @@ public class AdminServiceImpl implements AdminService {
     private PasswordEncoder passwordEncoder;
     @Override
     public String addUser(User user) {
-        String existingUserName = loadUserByUserName(user);
+        String existingUserName = loadUserByUserNameAndEmail(user);
         if (!existingUserName.equalsIgnoreCase(user.getUserName())) {
         user.setStatusFlag(true);
         if (user.getStatusFlag()) {
@@ -34,7 +34,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    private String loadUserByUserName(User user) {
+    private String loadUserByUserNameAndEmail(User user) {
       User existingUser =   adminRepository.findByUsernameAndEmail(user.getUserName(),user.getUserEmail());
         if (existingUser != null) {
             return existingUser.getUserName();
