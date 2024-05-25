@@ -4,9 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "User")
@@ -17,11 +15,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int userId;
     @NotNull
+    @NotBlank(message = "User Name  is mandatory")
     private String userName;
     @JsonIgnore
     @ApiModelProperty(value = "Hidden")
     private String userPassword;
-
+    @NotBlank(message = "User Email is mandatory")
+    @Email(message = "Email should be valid")
     @NotNull
     private String userEmail;
 
@@ -38,7 +38,7 @@ public class User {
 
     @Size(min = 10, max = 10, message = "Phone number must be exactly 10 digits")
     @Pattern(regexp = "\\d{10}", message = "Phone number must contain only 10 digits")
-    @NotNull
+    @NotBlank(message = "User Phone  is mandatory")
     private String userPhone;
 
 
