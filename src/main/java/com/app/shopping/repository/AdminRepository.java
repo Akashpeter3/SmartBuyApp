@@ -10,8 +10,8 @@ import java.util.Optional;
 @Repository
 public interface AdminRepository extends JpaRepository<User,Long> {
 
-    @Query("SELECT u FROM User u WHERE u.userName = :userName AND u.userEmail = :userEmail")
-    Optional<User> findByUsernameAndEmail(String userName, String userEmail);
-    @Query("SELECT u FROM User u WHERE u.userName = :userName")
-    Optional<User> findUserByUserName(String userName);
+    @Query("SELECT u FROM User u WHERE u.username = :username AND u.email = :email")
+    Optional<User> findByUsernameAndEmail(String username, String email);
+    @Query("SELECT u FROM User u WHERE u.username = :username")
+    Optional<User> findUserByUserName(String username);
 }

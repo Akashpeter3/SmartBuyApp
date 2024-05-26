@@ -1,7 +1,6 @@
 package com.app.shopping.dto.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiParam;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -10,23 +9,23 @@ import javax.validation.constraints.*;
 @Table(name = "User")
 public class User {
     @Id
-    @JsonIgnore
-    @ApiParam(value = "Hidden parameter", hidden = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
+    @ApiModelProperty(value = "Hidden")
     private int userId;
     @NotNull
     @NotBlank(message = "User Name  is mandatory")
-    private String userName;
+    private String username;
     @JsonIgnore
     @ApiModelProperty(value = "Hidden")
-    private String userPassword;
+    private String password;
     @NotBlank(message = "User Email is mandatory")
     @Email(message = "Email should be valid")
     @NotNull
-    private String userEmail;
+    private String email;
 
 
-    private String userAddress;
+    private String address;
 
     @JsonIgnore
     @ApiModelProperty(value = "Hidden")
@@ -34,20 +33,34 @@ public class User {
     private boolean statusFlag;
     @JsonIgnore
     @ApiModelProperty(value = "Hidden")
-    private String userStatus;
+    private String status;
 
     @Size(min = 10, max = 10, message = "Phone number must be exactly 10 digits")
     @Pattern(regexp = "\\d{10}", message = "Phone number must contain only 10 digits")
     @NotBlank(message = "User Phone  is mandatory")
-    private String userPhone;
+    private String phone;
 
 
-    public String getUserStatus() {
-        return userStatus;
+    public User() {
     }
 
-    public void setUserStatus(String userStatus) {
-        this.userStatus = userStatus;
+    public User(String username, String password, String email, String address, boolean statusFlag, String status, String phone) {
+
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.address = address;
+        this.statusFlag = statusFlag;
+        this.status = status;
+        this.phone = phone;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public boolean getStatusFlag() {
@@ -66,55 +79,55 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getUserPassword() {
-        return userPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getUserAddress() {
-        return userAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setUserAddress(String userAddress) {
-        this.userAddress = userAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getUserPhone() {
-        return userPhone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
-                ", userName='" + userName + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                ", userAddress='" + userAddress + '\'' +
-                ", userStatus='" + userStatus + '\'' +
-                ", userPhone='" + userPhone + '\'' +
+                ", userName='" + username + '\'' +
+                ", userEmail='" + email + '\'' +
+                ", userAddress='" + address + '\'' +
+                ", userStatus='" + status + '\'' +
+                ", userPhone='" + phone + '\'' +
                 '}';
     }
 }

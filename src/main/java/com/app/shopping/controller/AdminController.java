@@ -24,7 +24,7 @@ public class AdminController {
         String user = adminService.addUser(userDetail);
 
         if (AppConstants.USER_EXISTS.equalsIgnoreCase(user)) {
-            return new ResponseEntity<>("User " + userDetail.getUserName() + " already exists.", HttpStatus.ACCEPTED);
+            return new ResponseEntity<>("User " + userDetail.getUsername() + " already exists.", HttpStatus.ACCEPTED);
         }
         if (user != null) {
             return new ResponseEntity<>("User " + user + " added.", HttpStatus.CREATED);

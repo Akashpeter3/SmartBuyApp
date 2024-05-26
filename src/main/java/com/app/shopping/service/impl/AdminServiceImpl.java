@@ -31,10 +31,10 @@ public class AdminServiceImpl implements AdminService {
             } else {
                 user.setStatusFlag(true);
                 if (user.getStatusFlag()) {
-                    user.setUserStatus("Active");
-                    user.setUserPassword(PasswordUtil.generateRandomPassword());
+                    user.setStatus("Active");
+                    user.setPassword(PasswordUtil.generateRandomPassword());
                 }
-                String userName = adminRepository.save(user).getUserName();
+                String userName = adminRepository.save(user).getUsername();
                 return userName;
             }
         } catch (Exception e) {
@@ -81,7 +81,7 @@ public class AdminServiceImpl implements AdminService {
 
     private Optional<User> loadUserByUserNameAndEmail(User user) {
         try {
-            Optional<User> existingUser = adminRepository.findByUsernameAndEmail(user.getUserName(), user.getUserEmail());
+            Optional<User> existingUser = adminRepository.findByUsernameAndEmail(user.getUsername(), user.getEmail());
             if (existingUser != null) {
                 return existingUser;
             }
