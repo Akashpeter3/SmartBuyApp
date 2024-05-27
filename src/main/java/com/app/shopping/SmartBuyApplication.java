@@ -21,6 +21,7 @@ public class SmartBuyApplication {
 
 	@PostConstruct
 	public void initUsers() {
+		repository.deleteAll();
 		List<User> users = Stream.of(
 			new User("peter","peter","peterparker3@gmail.com","palathaiparambu",
 					true,"Active","9496133256")

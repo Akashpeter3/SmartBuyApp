@@ -10,16 +10,10 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 @Configuration
 @OpenAPIDefinition(
-        info = @io.swagger.v3.oas.annotations.info.Info(
-                title = "Shopping API",
-                version = "1.0",
-                description = "API documentation for Shopping application",
-                license = @io.swagger.v3.oas.annotations.info.License(name = "Apache 2.0", url = "http://springdoc.org")
-        ),
+        info = @io.swagger.v3.oas.annotations.info.Info(title = "Shopping API", version = "v1"),
         security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "bearerAuth")
 )
 @io.swagger.v3.oas.annotations.security.SecurityScheme(
@@ -28,10 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
         scheme = "bearer",
         bearerFormat = "JWT"
 )
-
-
-public class OpenApiConfig implements WebMvcConfigurer {
-
+public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
@@ -45,11 +36,11 @@ public class OpenApiConfig implements WebMvcConfigurer {
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"));
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("swagger-ui.html")
+//                .addResourceLocations("classpath:/META-INF/resources/");
+//        registry.addResourceHandler("/webjars/**")
+//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+//    }
 }
