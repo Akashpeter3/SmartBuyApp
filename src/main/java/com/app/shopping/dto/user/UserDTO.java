@@ -16,8 +16,8 @@ public class UserDTO {
     @NotNull
     @NotBlank(message = "User Name  is mandatory")
     private String username;
-    @JsonIgnore
-    @ApiModelProperty(value = "Hidden")
+
+
     private String password;
     @NotBlank(message = "User Email is mandatory")
     @Email(message = "Email should be valid")

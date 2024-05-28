@@ -4,7 +4,6 @@ import com.app.shopping.constants.AppConstants;
 import com.app.shopping.dto.user.UserDTO;
 import com.app.shopping.repository.UserRepository;
 import com.app.shopping.service.UserService;
-import com.app.shopping.util.PasswordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,8 +17,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Autowired
-    private UserRepository adminRepository;
-
+    private UserRepository userRepository;
 
 
     @Autowired
@@ -29,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private AuthenticationManager authenticationManager;
 
     @Override
-    public String addUser(UserDTO userDTO) {
+    public String registerUser(UserDTO userDTO) {
         try {
             Optional<UserDTO> existingUser = loadUserByUserNameAndEmail(userDTO);
 
@@ -39,9 +37,9 @@ public class UserServiceImpl implements UserService {
                 userDTO.setStatusFlag(true);
                 if (userDTO.getStatusFlag()) {
                     userDTO.setStatus("Active");
-                    userDTO.setPassword(PasswordUtil.generateRandomPassword());
+                    userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
                 }
-                String userName = adminRepository.save(userDTO).getUsername();
+                String userName = userRepository.save(userDTO).getUsername();
                 return userName;
             }
         } catch (Exception e) {
@@ -55,7 +53,7 @@ public class UserServiceImpl implements UserService {
         try {
             Optional<UserDTO> userToRemove = loadUserByUserName(userName);
             if (userToRemove.isPresent()) {
-                adminRepository.delete(userToRemove.get());
+                userRepository.delete(userToRemove.get());
                 return AppConstants.USER_DELETED;
             } else {
                 return AppConstants.USER_NOT_EXIST;
@@ -73,15 +71,44 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getUsers() {
-        List<UserDTO> userDTOS = adminRepository.findAll();
+        List<UserDTO> userDTOS = userRepository.findAll();
         return userDTOS;
     }
 
+    @Override
+    public boolean loginUser(String username, String password) {
+        Optional<UserDTO> optionalUser = loadUserByUserName(username);
+        if (optionalUser.isPresent()) {
+            UserDTO user = optionalUser.get();
+
+            // Check if the password matches
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                // Password matches
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    @Override
+    public boolean resetPassword(String username, String oldPassWord,String newPassword) {
+        Optional<UserDTO> userDetails = userRepository.findUserByUserName(username);
+        String encryptedPassword = userDetails.get().getPassword();
+        boolean isMatching = passwordEncoder.matches(oldPassWord, encryptedPassword);
+        if (isMatching) {
+           userDetails.get().setPassword(passwordEncoder.encode(newPassword));
+           userRepository.save(userDetails.get());
+           return true;
+        } else {
+            return false;
+        }
+    }
 
 
     private Optional<UserDTO> loadUserByUserName(String userName) {
         try {
-            return Optional.ofNullable(adminRepository.findUserByUserName(userName).orElse(null));
+            return Optional.ofNullable(userRepository.findUserByUserName(userName).orElse(null));
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -89,7 +116,7 @@ public class UserServiceImpl implements UserService {
 
     private Optional<UserDTO> loadUserByUserNameAndEmail(UserDTO userDTO) {
         try {
-            Optional<UserDTO> existingUser = adminRepository.findByUsernameAndEmail(userDTO.getUsername(), userDTO.getEmail());
+            Optional<UserDTO> existingUser = userRepository.findByUsernameAndEmail(userDTO.getUsername(), userDTO.getEmail());
             if (existingUser != null) {
                 return existingUser;
             }

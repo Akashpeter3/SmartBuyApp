@@ -5,7 +5,7 @@ import com.app.shopping.dto.user.UserDTO;
 import java.util.List;
 
 public interface UserService {
-    String addUser(UserDTO userDTO);
+    String registerUser(UserDTO userDTO);
 
     String removeUser(String userName);
 
@@ -15,4 +15,7 @@ public interface UserService {
     List<UserDTO> getUsers();
 
 
+    boolean loginUser(String username, String password);
+
+    boolean resetPassword(String username,String oldPassWord,String newPassword);
 }

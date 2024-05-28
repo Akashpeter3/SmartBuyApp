@@ -20,20 +20,6 @@ public class AdminController {
     private UserService userService;
 
 
-    @PostMapping("/addUser")
-    public ResponseEntity<String> addUser(@RequestBody UserDTO userDTODetail) {
-        String user = userService.addUser(userDTODetail);
-
-        if (AppConstants.USER_EXISTS.equalsIgnoreCase(user)) {
-            return new ResponseEntity<>("User " + userDTODetail.getUsername() + " already exists.", HttpStatus.ACCEPTED);
-        }
-        if (user != null) {
-            return new ResponseEntity<>("User " + user + " added.", HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>("Failed to add user.", HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @DeleteMapping("/removeUser/{userName}")
     public ResponseEntity<String> removeUser(@PathVariable String userName) {
         String response = userService.removeUser(userName);

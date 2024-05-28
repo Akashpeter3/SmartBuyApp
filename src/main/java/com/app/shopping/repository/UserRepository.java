@@ -14,6 +14,8 @@ public interface UserRepository extends JpaRepository<UserDTO,Integer> {
     Optional<UserDTO> findByUsernameAndEmail(String username, String email);
     @Query("SELECT u FROM UserDTO u WHERE u.username = :username")
     Optional<UserDTO> findUserByUserName(String username);
+
+
 }
 
 
